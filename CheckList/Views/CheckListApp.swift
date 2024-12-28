@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct CheckListApp: App {
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
-        }
+            NavigationStack {
+                ListView()
+            }
+        }.modelContainer(for: ChecklistItem.self)
     }
 }
