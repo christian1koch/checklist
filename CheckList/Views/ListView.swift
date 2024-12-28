@@ -19,7 +19,7 @@ struct ListView: View {
         List {
             ForEach(items) { item in
                 ListRowView(item: item).onTapGesture {
-                    withAnimation(.linear) {
+                    withAnimation(.snappy) {
                         item.isChecked = !item.isChecked
                     }
                 }
