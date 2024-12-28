@@ -34,7 +34,7 @@ struct AddView: View {
     
     func handleSaveButtonPressed() {
         if (isTextAppropiate()) {
-            modelContext.insert(ChecklistItem(title: textFieldText))
+            modelContext.insert(ChecklistItem(title: textFieldText, sortIndex: items.count))
             return dismiss()
         }
         alertTitle = "A new checklist item needs to be at least 3 characters long"

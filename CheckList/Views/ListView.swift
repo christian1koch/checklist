@@ -10,8 +10,9 @@ import SwiftData
 
 struct ListView: View {
     
-    @Query var items: [ChecklistItem]
+    @Query(sort: \ChecklistItem.sortIndex) var items: [ChecklistItem]
     @Environment(\.modelContext) var modelContext
+    
     
     var body: some View {
         
@@ -24,7 +25,15 @@ struct ListView: View {
                 }
             }
             .onDelete(perform: deleteItems)
-//            .onMove(perform: listViewModel.moveItem)
+            .onMove(perform: { indices, newOffset in
+                var s = items.sorted(by: { $0.sortIndex < $1.sortIndex })
+                s.move(fromOffsets: indices, toOffset: newOffset)
+                for (index, item) in s.enumerated() {
+                    item.sortIndex = index
+                }
+                try? self.modelContext.save()
+                print(items.map{$0.sortIndex});
+            })
         }
         .background(.white)
         .listStyle(.plain)
