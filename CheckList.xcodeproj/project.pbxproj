@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2D14343B2D20404500F51501 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D14343A2D20404500F51501 /* ListViewModel.swift */; };
 		2D1434472D20983900F51501 /* ChecklistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1434462D20983900F51501 /* ChecklistItem.swift */; };
+		2D1434492D21C83600F51501 /* AddRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D1434482D21C83600F51501 /* AddRowView.swift */; };
 		2D191DBD2D1F2858009B410F /* CheckListApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D191DBC2D1F2858009B410F /* CheckListApp.swift */; };
 		2D191DBF2D1F2858009B410F /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D191DBE2D1F2858009B410F /* ListView.swift */; };
 		2D191DC12D1F2859009B410F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2D191DC02D1F2859009B410F /* Assets.xcassets */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		2D14343A2D20404500F51501 /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		2D1434462D20983900F51501 /* ChecklistItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistItem.swift; sourceTree = "<group>"; };
+		2D1434482D21C83600F51501 /* AddRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRowView.swift; sourceTree = "<group>"; };
 		2D191DB92D1F2858009B410F /* CheckList.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CheckList.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D191DBC2D1F2858009B410F /* CheckListApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckListApp.swift; sourceTree = "<group>"; };
 		2D191DBE2D1F2858009B410F /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				2D191DCE2D1F4B96009B410F /* AddView.swift */,
 				2D191DBC2D1F2858009B410F /* CheckListApp.swift */,
 				2D191DBE2D1F2858009B410F /* ListView.swift */,
+				2D1434482D21C83600F51501 /* AddRowView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -183,6 +186,7 @@
 				2D191DBD2D1F2858009B410F /* CheckListApp.swift in Sources */,
 				2D191DCD2D1F4288009B410F /* ListRowView.swift in Sources */,
 				2D1434472D20983900F51501 /* ChecklistItem.swift in Sources */,
+				2D1434492D21C83600F51501 /* AddRowView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

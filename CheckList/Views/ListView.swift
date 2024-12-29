@@ -12,7 +12,16 @@ struct ListView: View {
     
     @Query(sort: \ChecklistItem.sortIndex) var items: [ChecklistItem]
     @Environment(\.modelContext) var modelContext
+    @State var isInAddMode = false;
     
+    @State var textFieldText = ""
+    
+    @State var alertTitle: String = ""
+    @State var showAlert: Bool = false
+    
+    var addButtonText: String {
+        isInAddMode ? "Done" : "Add"
+    }
     
     var body: some View {
         
@@ -34,6 +43,9 @@ struct ListView: View {
                 try? self.modelContext.save()
                 print(items.map{$0.sortIndex});
             })
+            if isInAddMode {
+                AddRowView(isOnAddMode: $isInAddMode, textFieldText: $textFieldText, handleOnSubmit: handleOnSubmit)
+            }
         }
         .background(.white)
         .listStyle(.plain)
@@ -43,7 +55,13 @@ struct ListView: View {
                 EditButton()
             }
             ToolbarItem(placement: .primaryAction) {
-                NavigationLink("Add", destination: AddView())
+                Button(addButtonText) {
+                    if (isInAddMode) {
+                        handleOnSubmit()
+                    }
+                    isInAddMode.toggle()
+                    
+                }
             }
         }
     }
@@ -53,6 +71,16 @@ struct ListView: View {
             let item = items[index]
             modelContext.delete(item)
         }
+    }
+    
+    func handleOnSubmit() {
+        if (textFieldText.isEmpty) {
+            return
+        }
+        let maxSortItem = items.max(by: {$0.sortIndex < $1.sortIndex})
+        let maxSortIndex = maxSortItem?.sortIndex ?? -1
+        modelContext.insert(ChecklistItem(title: textFieldText, sortIndex: maxSortIndex + 1))
+        textFieldText = ""
     }
     
 }
