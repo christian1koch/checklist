@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct AddView: View {
+struct AddItemView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) var modelContext
     @Query var items: [ChecklistItem]
@@ -55,6 +55,6 @@ struct AddView: View {
 
 #Preview {
     NavigationStack {
-        AddView()
+        AddItemView()
     }.environmentObject(ListViewModel())
 }

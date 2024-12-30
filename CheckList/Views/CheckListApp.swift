@@ -14,8 +14,8 @@ struct CheckListApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack {
-                ListView()
+                ChecklistListView()
             }
-        }.modelContainer(for: ChecklistItem.self)
+        }.modelContainer(for: Checklist.self)
     }
 }

@@ -10,7 +10,7 @@ import SwiftData
 
 struct ListView: View {
     
-    @Query(sort: \ChecklistItem.sortIndex) var items: [ChecklistItem]
+    @Bindable var checklist: Checklist
     @Environment(\.modelContext) var modelContext
     @State var isInAddMode = false;
     
@@ -24,51 +24,56 @@ struct ListView: View {
     }
     
     var body: some View {
-        
-        List {
-            ForEach(items) { item in
-                ListRowView(item: item).onTapGesture {
-                    withAnimation(.snappy) {
-                        item.isChecked = !item.isChecked
+        VStack {
+            Text(checklist.name)
+                .font(.title)
+                .lineLimit(1) // Prevents wrapping
+                .minimumScaleFactor(0.5) // Scales down text size if needed
+                .multilineTextAlignment(.center)
+            List {
+                ForEach(checklist.sortedItems) { item in
+                    ListRowView(item: item).onTapGesture {
+                        withAnimation(.snappy) {
+                            item.isChecked = !item.isChecked
+                        }
+                    }
+                }
+                .onDelete(perform: deleteItems)
+                .onMove(perform: { indices, newOffset in
+                    var s = checklist.sortedItems.sorted(by: { $0.sortIndex < $1.sortIndex })
+                    s.move(fromOffsets: indices, toOffset: newOffset)
+                    for (index, item) in s.enumerated() {
+                        item.sortIndex = index
+                    }
+                    try? self.modelContext.save()
+                    print(checklist.sortedItems.map{$0.sortIndex});
+                })
+                if isInAddMode {
+                    AddRowView(isOnAddMode: $isInAddMode, textFieldText: $textFieldText, handleOnSubmit: handleOnSubmit)
+                }
+            }
+            .background(.white)
+            .listStyle(.plain)
+            .toolbar {
+                ToolbarItem(placement: .secondaryAction) {
+                    EditButton()
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button(addButtonText) {
+                        if (isInAddMode) {
+                            handleOnSubmit()
+                        }
+                        isInAddMode.toggle()
+                        
                     }
                 }
             }
-            .onDelete(perform: deleteItems)
-            .onMove(perform: { indices, newOffset in
-                var s = items.sorted(by: { $0.sortIndex < $1.sortIndex })
-                s.move(fromOffsets: indices, toOffset: newOffset)
-                for (index, item) in s.enumerated() {
-                    item.sortIndex = index
-                }
-                try? self.modelContext.save()
-                print(items.map{$0.sortIndex});
-            })
-            if isInAddMode {
-                AddRowView(isOnAddMode: $isInAddMode, textFieldText: $textFieldText, handleOnSubmit: handleOnSubmit)
-            }
-        }
-        .background(.white)
-        .listStyle(.plain)
-        .navigationTitle("Checklist")
-        .toolbar {
-            ToolbarItem(placement: .secondaryAction) {
-                EditButton()
-            }
-            ToolbarItem(placement: .primaryAction) {
-                Button(addButtonText) {
-                    if (isInAddMode) {
-                        handleOnSubmit()
-                    }
-                    isInAddMode.toggle()
-                    
-                }
-            }
-        }
+        }.padding([.horizontal], 40)
     }
     
     func deleteItems(_ indexSet: IndexSet) {
         for index in indexSet {
-            let item = items[index]
+            let item = checklist.sortedItems[index]
             modelContext.delete(item)
         }
     }
@@ -77,16 +82,17 @@ struct ListView: View {
         if (textFieldText.isEmpty) {
             return
         }
-        let maxSortItem = items.max(by: {$0.sortIndex < $1.sortIndex})
+        let maxSortItem = checklist.sortedItems.max(by: {$0.sortIndex < $1.sortIndex})
         let maxSortIndex = maxSortItem?.sortIndex ?? -1
-        modelContext.insert(ChecklistItem(title: textFieldText, sortIndex: maxSortIndex + 1))
+        let newItem = ChecklistItem(title: textFieldText, sortIndex: maxSortIndex + 1)
+        checklist.items.append(newItem)
         textFieldText = ""
     }
     
 }
 
-#Preview {
-    NavigationStack {
-        ListView()
-    }
-}
+//#Preview {
+//    NavigationStack {
+//        ListView()
+//    }
+//}
