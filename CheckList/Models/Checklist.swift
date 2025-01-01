@@ -12,7 +12,6 @@ import SwiftData
 class Checklist {
     var name: String
     @Relationship(deleteRule: .cascade) var items = [ChecklistItem]()
-    
     init(name: String) {
         self.name = name;
     }

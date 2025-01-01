@@ -8,6 +8,19 @@
 import SwiftUI
 import SwiftData
 
+extension Checklist {
+    static var previewChecklist: Checklist {
+        let checklist = Checklist(name: "My Checklist")
+        checklist.items = [
+            ChecklistItem(title: "Buy groceries", isChecked: false, sortIndex: 0),
+            ChecklistItem(title: "Do laundry", isChecked: true, sortIndex: 1),
+            ChecklistItem(title: "Call mom", isChecked: false, sortIndex: 2)
+        ]
+        return checklist
+    }
+}
+
+
 struct ListView: View {
     
     @Bindable var checklist: Checklist
@@ -30,6 +43,19 @@ struct ListView: View {
                 .lineLimit(1) // Prevents wrapping
                 .minimumScaleFactor(0.5) // Scales down text size if needed
                 .multilineTextAlignment(.center)
+            HStack {
+                Button("Uncheck All", systemImage: "checklist.unchecked") {
+                    checklist.items.forEach { item in
+                        item.isChecked = false
+                    }
+                }
+                Spacer()
+                Button("Check All", systemImage: "checklist.checked") {
+                    checklist.items.forEach { item in
+                        item.isChecked = true
+                    }
+                }
+            }.padding(.vertical)
             List {
                 ForEach(checklist.sortedItems) { item in
                     ListRowView(item: item).onTapGesture {
@@ -91,8 +117,25 @@ struct ListView: View {
     
 }
 
-//#Preview {
-//    NavigationStack {
-//        ListView()
-//    }
-//}
+#Preview {
+    do {
+        let container = try ModelContainer(for: Checklist.self)
+        let context = ModelContext(container)
+        
+        // Create mock data
+        let checklist = Checklist(name: "My Checklist")
+        checklist.items = [
+            ChecklistItem(title: "Buy groceries", isChecked: false, sortIndex: 0),
+            ChecklistItem(title: "Do laundry", isChecked: true, sortIndex: 1),
+            ChecklistItem(title: "Call mom", isChecked: false, sortIndex: 2)
+        ]
+        context.insert(checklist) // Add checklist to context
+        
+        return NavigationStack {
+            ListView(checklist: checklist)
+                .environment(\.modelContext, context) // Provide the mock context
+        }
+    } catch {
+        fatalError("Failed to create ModelContainer: \(error)")
+    }
+}
