@@ -44,15 +44,17 @@ struct ListView: View {
                 .minimumScaleFactor(0.5) // Scales down text size if needed
                 .multilineTextAlignment(.center)
             HStack {
-                Button("Uncheck All", systemImage: "checklist.unchecked") {
-                    checklist.items.forEach { item in
-                        item.isChecked = false
+                if (!checklist.items.isEmpty) {
+                    Button("Uncheck All", systemImage: "checklist.unchecked") {
+                        checklist.items.forEach { item in
+                            item.isChecked = false
+                        }
                     }
-                }
-                Spacer()
-                Button("Check All", systemImage: "checklist.checked") {
-                    checklist.items.forEach { item in
-                        item.isChecked = true
+                    Spacer()
+                    Button("Check All", systemImage: "checklist.checked") {
+                        checklist.items.forEach { item in
+                            item.isChecked = true
+                        }
                     }
                 }
             }.padding(.vertical)
@@ -101,6 +103,8 @@ struct ListView: View {
         for index in indexSet {
             let item = checklist.sortedItems[index]
             modelContext.delete(item)
+            checklist.items.removeAll { $0.id == item.id }
+            try? modelContext.save()
         }
     }
     

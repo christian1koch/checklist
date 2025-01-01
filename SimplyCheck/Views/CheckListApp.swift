@@ -16,6 +16,6 @@ struct CheckListApp: App {
             NavigationStack {
                 ChecklistListView()
             }
-        }.modelContainer(for: Checklist.self)
+        }.modelContainer(for: [Checklist.self, ChecklistItem.self])
     }
 }
