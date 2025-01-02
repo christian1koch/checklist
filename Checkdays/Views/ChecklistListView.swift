@@ -10,7 +10,7 @@ import SwiftData
 
 struct ChecklistListView: View {
     @Query var checklists: [Checklist]
-    
+    @Environment(\.modelContext) var modelContext
     
     var body: some View {
         NavigationStack {
@@ -19,9 +19,9 @@ struct ChecklistListView: View {
                     HStack {
                         NavigationLink(checklist.name, value: checklist)
                     }
-                }
+                }.onDelete(perform: deleteItems)
             }
-            .navigationTitle("CheckLists")
+            .navigationTitle("Checklists")
             .navigationDestination(for: Checklist.self) { checklist in
                 ListView(checklist: checklist)
             }.toolbar {
@@ -29,6 +29,13 @@ struct ChecklistListView: View {
                     AddChecklistView()
                 }
             }
+        }
+    }
+    
+    func deleteItems(_ indexSet: IndexSet) {
+        for index in indexSet {
+            let checklistToDelete = checklists[index]
+            modelContext.delete(checklistToDelete)
         }
     }
 }
