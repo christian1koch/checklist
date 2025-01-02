@@ -80,7 +80,6 @@ struct ListView: View {
                     AddRowView(isOnAddMode: $isInAddMode, textFieldText: $textFieldText, handleOnSubmit: handleOnSubmit)
                 }
             }
-            .background(.white)
             .listStyle(.plain)
             .toolbar {
                 ToolbarItem(placement: .secondaryAction) {
